@@ -1,4 +1,3 @@
-
 def check_proxy(proxies):
     import requests
     proxies_https = proxies['https'] if proxies is not None else '无'
@@ -39,7 +38,7 @@ def backup_and_download(current_version, remote_version):
     proxies, = get_conf('proxies')
     r = requests.get(
         'https://github.com/binary-husky/chatgpt_academic/archive/refs/heads/master.zip', proxies=proxies, stream=True)
-    zip_file_path = backup_dir+'/master.zip'
+    zip_file_path = backup_dir + '/master.zip'
     with open(zip_file_path, 'wb+') as f:
         f.write(r.content)
     dst_path = new_version_dir
@@ -66,7 +65,7 @@ def patch_and_restart(path):
         print('由于您没有设置config_private.py私密配置，现将您的现有配置移动至config_private.py以防止配置丢失，',
               '另外您可以随时在history子文件夹下找回旧版的程序。')
         shutil.copyfile('config.py', 'config_private.py')
-    distutils.dir_util.copy_tree(path+'/chatgpt_academic-master', './')
+    distutils.dir_util.copy_tree(path + '/chatgpt_academic-master', './')
     print('更新完成，您可以随时在history子文件夹下找回旧版的程序，5s之后重启')
     for i in reversed(range(5)):
         time.sleep(1)
@@ -96,7 +95,8 @@ def auto_update():
         import json
         proxies, = get_conf('proxies')
         response = requests.get(
-            "https://raw.githubusercontent.com/binary-husky/chatgpt_academic/master/version", proxies=proxies, timeout=1)
+            "https://raw.githubusercontent.com/binary-husky/chatgpt_academic/master/version", proxies=proxies,
+            timeout=1)
         remote_json_data = json.loads(response.text)
         remote_version = remote_json_data['version']
         if remote_json_data["show_feature"]:
@@ -128,7 +128,9 @@ def auto_update():
 
 if __name__ == '__main__':
     import os
+
     os.environ['no_proxy'] = '*'  # 避免代理网络产生意外污染
     from toolbox import get_conf
+
     proxies, = get_conf('proxies')
     check_proxy(proxies)
